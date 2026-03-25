@@ -37,3 +37,10 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+.idea/
+.vscode/
+out/
+target/
+*.class
+*.log
