@@ -1,5 +1,6 @@
 package service;
 
+import exception.EmailInvalidoException;
 import model.Contato;
 import java.util.List;
 import java.util.Optional;
@@ -51,5 +52,9 @@ public class ContatoService {
                 .findFirst();
     }
 
-
+    public void validarEmail(String email) {
+        if (!email.contains("@")) {
+            throw new EmailInvalidoException(email);
+        }
+    }
 }

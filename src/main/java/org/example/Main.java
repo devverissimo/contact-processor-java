@@ -1,5 +1,7 @@
 package org.example;
 
+import exception.ContatoNaoEncontradoException;
+import exception.EmailInvalidoException;
 import model.Contato;
 import service.ContatoService;
 
@@ -37,8 +39,8 @@ public class Main {
 
         try {
             Contato emailNaoEncontrado = service.buscarPorEmail(contatos, "naoexiste@gmail.com")
-                    .orElseThrow(() -> new RuntimeException("Email não encontrado"));
-        } catch (RuntimeException e) {
+                    .orElseThrow(() -> new ContatoNaoEncontradoException("Email não encontrado"));
+        } catch (ContatoNaoEncontradoException e) {
             System.out.println("Exceção capturada: " + e.getMessage());
         }
 
@@ -53,11 +55,23 @@ public class Main {
 
         try {
             Contato nomeNaoEncontrado = service.buscarPorNome(contatos, "naoexiste")
-                    .orElseThrow(() -> new RuntimeException("Nome não encontrado"));
-        } catch (RuntimeException e) {
+                    .orElseThrow(() -> new ContatoNaoEncontradoException("Nome não encontrado"));
+        } catch (ContatoNaoEncontradoException e) {
             System.out.println("Exceção capturada: " + e.getMessage());
         }
 
+        // ── validarEmail ──────────────────────────────────────────────────────────
+        System.out.println("\n--- validarEmail ---");
 
+// email válido — não lança nada
+        service.validarEmail("maria@gmail.com");
+        System.out.println("maria@gmail.com → válido!");
+
+// email inválido — lança EmailInvalidoException
+        try {
+            service.validarEmail("anaemail.com");
+        } catch (EmailInvalidoException e) {
+            System.out.println("Exceção capturada: " + e.getMessage());
+        }
 }
 }
