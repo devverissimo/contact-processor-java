@@ -1,12 +1,15 @@
 package org.example;
 
 import model.Contato;
+import service.ContatoService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Main {
-    static void main(String[] args) {
+    public static void main(String[] args) {
+
         List<Contato> contatos = new ArrayList<>();
 
         contatos.add(new Contato("Maria", 20, "maria@gmail.com", "62999990001", true, "Goiânia"));
@@ -21,7 +24,40 @@ public class Main {
         for (Contato contato : contatos) {
             System.out.println(contato);
         }
-    }
 
 
+        ContatoService service = new ContatoService();
+        //email
+        Optional<Contato> resultadoEmail = service.buscarPorEmail(contatos, "maria@gmail.com");
+        resultadoEmail.ifPresent(contato -> System.out.println("Entrontrado: " + contato.getEmail()));
+        Contato contato = service.buscarPorEmail(contatos, "naoexiste@gmail.com")
+                .orElse(null);
+
+        System.out.println(contato); // null — mas você escolheu isso explicitamente
+
+        try {
+            Contato emailNaoEncontrado = service.buscarPorEmail(contatos, "naoexiste@gmail.com")
+                    .orElseThrow(() -> new RuntimeException("Email não encontrado"));
+        } catch (RuntimeException e) {
+            System.out.println("Exceção capturada: " + e.getMessage());
+        }
+
+
+        //nome
+        Optional<Contato> resultadoNome = service.buscarPorNome(contatos, "Maria");
+        resultadoNome.ifPresent(nome -> System.out.println("Nome: " + nome.getNome()));
+        contato = service.buscarPorNome(contatos, "naoexsite")
+                .orElse(null);
+
+        System.out.println(contato); // null — mas você escolheu isso explicitamente
+
+        try {
+            Contato nomeNaoEncontrado = service.buscarPorNome(contatos, "naoexiste")
+                    .orElseThrow(() -> new RuntimeException("Nome não encontrado"));
+        } catch (RuntimeException e) {
+            System.out.println("Exceção capturada: " + e.getMessage());
+        }
+
+
+}
 }
