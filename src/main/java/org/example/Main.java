@@ -4,6 +4,7 @@ import exception.ContatoNaoEncontradoException;
 import exception.EmailInvalidoException;
 import model.Contato;
 import service.ContatoService;
+import service.RelatorioService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,5 +74,10 @@ public class Main {
         } catch (EmailInvalidoException e) {
             System.out.println("Exceção capturada: " + e.getMessage());
         }
+        RelatorioService relatorioService = new RelatorioService();
+
+        String relatorio = relatorioService.gerarRelatorio(contatos);
+
+        System.out.println(relatorio);
 }
 }
