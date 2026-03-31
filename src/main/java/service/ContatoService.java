@@ -2,8 +2,8 @@ package service;
 
 import exception.EmailInvalidoException;
 import model.Contato;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ContatoService {
@@ -57,4 +57,38 @@ public class ContatoService {
             throw new EmailInvalidoException(email);
         }
     }
+    public long contarAtivos(List<Contato> contatos){
+        return contatos.stream()
+                .filter(Contato::isAtivo)
+                .count();
+    }
+    public OptionalDouble mediaDeIdade(List<Contato> contatos){
+        return contatos.stream()
+                .map(Contato :: getIdade)
+                .filter(Objects::nonNull)
+                .mapToInt(Integer::intValue)
+                .average();
+    }
+    public Map<String, List<Contato>> agruparPorCidade(List<Contato> contatos){
+        return  contatos.stream()
+                .collect(Collectors.groupingBy(Contato::getCidade));
+    }
+    public List<String> emailAtivos(List<Contato> contatos){
+        return contatos.stream()
+                .filter(Contato::isAtivo)
+                .map(Contato::getEmail)
+                .filter(Objects::nonNull)
+                .distinct()
+                .toList();
+    }
+
+
+
+
+
+
+
+
+
+
 }

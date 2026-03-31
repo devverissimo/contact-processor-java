@@ -9,6 +9,7 @@ import service.RelatorioService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalDouble;
 
 public class Main {
     public static void main(String[] args) {
@@ -79,5 +80,9 @@ public class Main {
         String relatorio = relatorioService.gerarRelatorio(contatos);
 
         System.out.println(relatorio);
+
+        OptionalDouble media = service.mediaDeIdade(contatos);
+
+        media.ifPresent(m -> System.out.println("Média: " + m));
 }
 }
